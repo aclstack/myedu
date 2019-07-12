@@ -108,7 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# 不需要配置models,由于已经注册app.user所以直接以user起
+AUTH_USER_MODEL = "user.UserProfile"
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
