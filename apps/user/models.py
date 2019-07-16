@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -7,6 +8,17 @@ GENDER_CHOICES = (
     ("male", "男"),
     ("female", "女")
 )
+
+
+class BaseModel(models.Model):
+    # 如果datetime.now()则时间会固定
+    add_time = models.DateField(default=datetime.now, verbose_name="添加时间")
+
+    class Meta:
+        # 定义不生成此表，仅做继承使用
+        abstract = True
+
+
 class UserProfile(AbstractUser):
 
     nick_name = models.CharField(max_length=50, verbose_name="昵称", default="")
