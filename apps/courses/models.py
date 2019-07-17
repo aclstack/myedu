@@ -4,6 +4,7 @@ from apps.user.models import BaseModel
 from apps.organizations.models import Teacher
 
 """
+1、
 实体1 <关系> 实体2
 课程 章节 课程资源 （一对多）
 章节 视频   (一对多)
@@ -11,6 +12,9 @@ Course 课程基本信息
 Lesson 章节信息
 Video  视频
 CourseResource  课程资源
+
+2、实体的具体字段
+3、每个字段的类型，是否必填
 """
 
 CLASS_LEVEL = (
