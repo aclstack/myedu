@@ -34,9 +34,9 @@ class VideoAdmin(object):
     list_filter = ['lesson', 'name', 'add_time']
 
 class CourseResourceAdmin(object):
-    list_display = ['course', 'name', 'download', 'add_time']
-    search_fields = ['course', 'name', 'download']
-    list_filter = ['course', 'name', 'download', 'add_time']
+    list_display = ['course', 'name', 'file', 'add_time']
+    search_fields = ['course', 'name', 'file']
+    list_filter = ['course', 'name', 'file', 'add_time']
 
 xadmin.site.register(Course, CourseAdmin)
 xadmin.site.register(Lesson, LessonAdmin)

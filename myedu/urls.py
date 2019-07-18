@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import TemplateView
 import xadmin
 
+url = 'http://127.0.0.1:8000/xadmin/'
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    # 使用django模块直接返回html
+    path('', TemplateView.as_view(template_name="index.html")),
+    path('login/', TemplateView.as_view(template_name="login.html"), name='login'),
+    path('register/', TemplateView.as_view(template_name="register.html"), name='register'),
     path('xadmin/', xadmin.site.urls),
+
+
 ]
