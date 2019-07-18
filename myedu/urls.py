@@ -18,7 +18,8 @@ from django.urls import path
 from django.views.generic import TemplateView
 import xadmin
 
-url = 'http://127.0.0.1:8000/xadmin/'
+# CBV(class base view)
+# FBV(function base view)
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # 使用django模块直接返回html
