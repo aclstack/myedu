@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'apps.operation.apps.OperationConfig',
     'apps.organizations.apps.OrganizationsConfig',
     'apps.user.apps.UserConfig',
+    'crispy_forms',
+    'xadmin.apps.XAdminConfig',
+
 ]
 
 MIDDLEWARE = [
