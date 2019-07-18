@@ -12,20 +12,23 @@ CATEGORY_TYPE = (
 
 # 后续可以设计相关添加城市功能，避免重复修改models
 class City(BaseModel):
-    name = models.CharField(max_length=20, verbose_name=u'城市')
+    name = models.CharField(max_length=20, verbose_name=u'城市名')
     desc = models.CharField(max_length=200, verbose_name=u'描述')
     class Meta:
         verbose_name  = '城市'
         verbose_name_plural = verbose_name
+    # 后台回显字段，必须回填必填项，否则容易出问题
 
+    def __str__(self):
+        return self.name
 
 class CourseOrg(BaseModel):
     name = models.CharField(max_length=50, verbose_name='机构名称')
     desc = models.TextField(verbose_name='描述')
     tag = models.CharField(default='全国知名', verbose_name='机构标签', max_length=20)
     category = models.CharField(default='jg', choices=CATEGORY_TYPE, max_length=2)
-    click_num = models.IntegerField(default=0, verbose_name='点击数')
-    fav_num = models.IntegerField(default=0, verbose_name='收藏数')
+    click_nums = models.IntegerField(default=0, verbose_name='点击数')
+    fav_nums = models.IntegerField(default=0, verbose_name='收藏数')
     image = models.ImageField(upload_to='org/%Y/%m', verbose_name=u'logo', max_length=100)
     address = models.CharField(max_length=150, verbose_name='机构地址')
     students = models.IntegerField(default=0, verbose_name='学习人数')
@@ -36,6 +39,9 @@ class CourseOrg(BaseModel):
     class Meta:
         verbose_name = '课程机构'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Teacher(BaseModel):
@@ -54,3 +60,6 @@ class Teacher(BaseModel):
     class Meta:
         verbose_name = '教师'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
