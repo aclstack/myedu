@@ -18,15 +18,19 @@ from django.urls import path
 from django.views.generic import TemplateView
 import xadmin
 
+from apps.user.views import LoginView
+
 # CBV(class base view)
 # FBV(function base view)
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # 使用django模块直接返回html
-    path('', TemplateView.as_view(template_name="index.html")),
-    path('login/', TemplateView.as_view(template_name="login.html"), name='login'),
-    path('register/', TemplateView.as_view(template_name="register.html"), name='register'),
     path('xadmin/', xadmin.site.urls),
+    path('', TemplateView.as_view(template_name="index.html"), name='index'),
+    # name用于前端接收URL地址,如果前端引用不存在的值则会报错
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', TemplateView.as_view(template_name="register.html"), name='register'),
+
 
 
 ]
