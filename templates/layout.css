@@ -1,0 +1,129 @@
+body, ul,p{
+    padding: 0;
+    margin: 0;
+}
+
+.clearfix::after{
+    content: '';
+    display: table;
+    /*用了float必须清浮动*/
+    clear: both;
+}
+
+/*头部*/
+
+.header {
+    /*background: #024f61;*/
+    border-bottom: 1px solid #f1f1f1;
+    /*padding: 0 20px;*/
+    height: 50px;
+
+}
+.header .logo{
+    width: 270px;
+    text-align: center;
+    margin-right: 100px;
+}
+
+.header .logo img{
+    margin-top: 5px;
+}
+
+.header .nav-header ul{
+    list-style: none;
+}
+
+.header .nav-header ul li, .header .nav-header, .logo {
+    float: left;
+}
+
+.header .nav-header ul li a{
+    color: #333;
+    padding: 15px;
+    display: block;
+
+}
+
+.header .nav-header ul li a:hover{
+    background: #13bbf1;
+    color: #FFFFFF;
+
+}
+
+
+
+
+a{
+    text-decoration: none;
+
+}
+
+.table {
+     /*solid 实线 边框颜色#ccc */
+    width: 100%;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+
+
+}
+
+.statistics {
+    margin: 15px 20px 15px 20px;
+
+}
+
+.table>thead>tr>th, .table>tbody>tr>td{
+    border: 1px solid #ccc;
+    padding:  6px 12px;
+    text-align: left;
+
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.indent{
+    text-indent: 30px;
+    text-align: justify;
+}
+
+.nav {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    /*margin-left: 50px;*/
+    width: 270px;
+    border: 1px solid #ccc;
+}
+
+.nav ul{
+    list-style: none;
+}
+
+.nav ul li{
+    background: #f1f1f1;
+    border-bottom: 1px solid #ccc;
+}
+
+.nav  ul li:last-child{
+    border-bottom: none;
+}
+
+.nav ul li a{
+    padding: 20px 30px;
+    /*块*/
+    display: block;
+    /*内联元素*/
+    /*display: inline;*/
+    /*内联元素快*/
+    /*display: inline-block;*/
+    color: #333;
+}
+
+.nav ul li a:hover{
+    background: #4FB137;
+    color: #FFFFFF;
+}

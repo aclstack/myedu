@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url, include
 from django.views.generic import TemplateView
 import xadmin
 
@@ -30,6 +31,7 @@ urlpatterns = [
     # name用于前端接收URL地址,如果前端引用不存在的值则会报错
     path('login/', LoginView.as_view(), name='login'),
     path('register/', TemplateView.as_view(template_name="register.html"), name='register'),
+    url(r'^captcha/', include('captcha.urls')),
 
 
 
