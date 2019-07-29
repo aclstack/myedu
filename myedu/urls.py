@@ -19,7 +19,7 @@ from django.conf.urls import url, include
 from django.views.generic import TemplateView
 import xadmin
 
-from apps.user.views import LoginView
+from apps.user.views import LoginView, LogoutView
 
 # CBV(class base view)
 # FBV(function base view)
@@ -30,9 +30,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html"), name='index'),
     # name用于前端接收URL地址,如果前端引用不存在的值则会报错
     path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', TemplateView.as_view(template_name="register.html"), name='register'),
     url(r'^captcha/', include('captcha.urls')),
-
-
-
 ]
