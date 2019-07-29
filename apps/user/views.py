@@ -3,21 +3,20 @@ from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from apps.user.forms import LoginForm
+from apps.user.forms import LoginForm, DynamicLoginForm
 
-
+# Create your views here.
 class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
-        return HttpResponseRedirect(reverse('index'))
-
+        return HttpResponseRedirect(reverse("index"))
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('index'))
-        return render(request, 'login.html')
-
+        # if request.user.is_authenticate:
+        #     return HttpResponseRedirect(reverse("index"))
+        login_form = DynamicLoginForm()
+        return render(request, 'login.html', {'login_form': login_form})
     def post(self, request, *args, **kwargs):
         login_form = LoginForm(request.POST)
         if login_form.is_valid():

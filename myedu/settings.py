@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.user.apps.UserConfig',
     'crispy_forms',
     'xadmin.apps.XAdminConfig',
+    'captcha',
 
 ]
 
