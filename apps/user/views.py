@@ -1,15 +1,51 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from apps.user.forms import LoginForm, DynamicLoginForm
-
+from apps.user.forms import LoginForm, DynamicLoginForm, DynamicLoginPostForm
+from apps.utils.YunPian import send_single_sms
+from apps.utils.random_str import generate_random
+from myedu.settings import apikey, REDIS_HOST, REDIS_PORT
+import redis
+from apps.user.models import UserProfile
 # Create your views here.
+class SendSmsView(View):
+    def post(self, request, *args, **kwargs):
+        send_sms_form = DynamicLoginForm(request.POST)
+        re_dict = {}
+        if send_sms_form.is_valid():
+            mobile = send_sms_form.cleaned_data['mobile']
+            # 随机生成数字验证码
+            code = generate_random(4, 0)
+            re_json = send_single_sms(apikey, mobile, code)
+            if re_json['code'] == 0:
+                re_dict['status'] = 'success'
+                r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, charset="utf8", decode_responses=True)
+                r.set(str(mobile), code)
+                r.expire(str(mobile), 60*5) # 设置验证码5分钟过期
+            else:
+                re_dict['msg'] = re_json['msg']
+        else:
+            for key, value in send_sms_form.errors.items():
+                re_dict[key] = value[0]
+        return JsonResponse(re_dict)
+
+
 class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return HttpResponseRedirect(reverse("index"))
+
+
+class RegisterView(View):
+    def get(self,request, *args, **kwargs):
+        login_form = DynamicLoginForm()
+        return render(request, 'register.html', {'login_form': login_form})
+
+    def post(self, request, *args, **kwargs):
+        pass
+
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -48,3 +84,29 @@ class LoginView(View):
                 return render(request, 'login.html', {'msg': '用户名或密码错误', 'login_form': login_form})
         else:
             return render(request, 'login.html', {'login_form': login_form})
+
+
+class DynamicLoginView(View):
+    def post(self, request, *args, **kwargs):
+        login_form = DynamicLoginPostForm(request.POST)
+        dynamic_login = True
+        if login_form.is_valid():
+            mobile = login_form.cleaned_data['mobile']
+            existed_user = UserProfile.objects.filter(mobile=mobile)
+            if existed_user:
+                user = existed_user[0]
+            else:
+                # 新建用户
+                user = UserProfile(username=mobile)
+                password = generate_random(10, 2)
+                user.set_password(password)
+                user.mobile = mobile
+                user.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+
+        else:
+            d_form = DynamicLoginForm()
+            return render(request, 'login.html', {'login_form': login_form,
+                                                  'd_form': d_form,
+                                                  'dynamic_login': dynamic_login})

@@ -133,3 +133,10 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR, "static"]
+
+# smsinfo
+apikey = '123456'
+
+# redis相关配置
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = 6379

@@ -17,9 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
-import xadmin
+from django.views.decorators.csrf import csrf_exempt
 
-from apps.user.views import LoginView, LogoutView
+import xadmin
+from apps.user.views import LoginView, LogoutView, SendSmsView, DynamicLoginView, RegisterView
 
 # CBV(class base view)
 # FBV(function base view)
@@ -30,7 +31,17 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html"), name='index'),
     # name用于前端接收URL地址,如果前端引用不存在的值则会报错
     path('login/', LoginView.as_view(), name='login'),
+    path('d_login/', DynamicLoginView.as_view(), name='d_login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('register/', TemplateView.as_view(template_name="register.html"), name='register'),
+    path('register/', RegisterView.as_view(), name='register'),
     url(r'^captcha/', include('captcha.urls')),
+    # 去除对send_sms的csrf验证
+    url(r'^send_sms/', csrf_exempt(SendSmsView.as_view()), name='send_sms'),
 ]
+
+### 编写一个view的几个步骤
+'''
+1、view 代码
+2、配置URL
+3、修改HTML页面中相关的地址
+'''

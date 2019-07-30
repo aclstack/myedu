@@ -95,10 +95,19 @@ $(function() {
 		$(this).parent().removeClass('focus').addClass('blur');
 	});
 
-    // 发送手机验证码
-    $('#jsSendCode').on('click',function(){
-        send_sms_code(this,$('#jsMobileTips'));
-    });
+	//重发送短信验证码计时
+    show_send_sms = function (time){
+        $('#jsSendCode').val(time+"秒后重发");
+        if(time<=0){
+            clearTimeout(send_sms_time);
+            $('#jsMobileTips').hide(500);
+            $('#jsSendCode').val("发送验证码").removeAttr("disabled");
+            return;
+        }
+        time--;
+        send_sms_time = setTimeout("show_send_sms("+time+")", 1000);
+    }
+
     //发送手机验证码
     function send_sms_code(sendBtn,tipsId){
         var $sendBtn = $(sendBtn),
@@ -145,11 +154,17 @@ $(function() {
                 }else if(data.status == 'success'){
                     Dml.fun.showErrorTips($tipsId, "短信验证码已发送");
                     $sendBtn.attr("disabled","disabled");
-                    show_send_sms(60);
+                    window.show_send_sms(60);
                 }
             }
         });
     }
+
+    // 发送手机验证码
+    $('#jsSendCode').on('click',function(){
+        send_sms_code(this,$('#jsMobileTips'));
+    });
+
 
     $('#jsMobileRegBtn').on('click',function(){
         $( "#mobile_register_form" ).submit();
@@ -168,16 +183,5 @@ $(function() {
         refresh_captcha();
     });
 
-    //重发送短信验证码计时
-    function show_send_sms(time){
-    $('#jsSendCode').val(time+"秒后重发");
-    if(time<=0){
-        clearTimeout(send_sms_time);
-        $('#jsMobileTips').hide(500);
-         $('#jsSendCode').val("发送验证码").removeAttr("disabled");
-        return;
-    }
-    time--;
-    send_sms_time = setTimeout("show_send_sms("+time+")", 1000);
-}
+
 });
