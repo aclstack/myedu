@@ -3,7 +3,7 @@ from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from apps.user.forms import LoginForm, DynamicLoginForm, DynamicLoginPostForm
+from apps.user.forms import LoginForm, DynamicLoginForm, DynamicLoginPostForm, RegisterGetForm, RegisterPostForm
 from apps.utils.YunPian import send_single_sms
 from apps.utils.random_str import generate_random
 from myedu.settings import apikey, REDIS_HOST, REDIS_PORT
@@ -40,11 +40,30 @@ class LogoutView(View):
 
 class RegisterView(View):
     def get(self,request, *args, **kwargs):
-        login_form = DynamicLoginForm()
-        return render(request, 'register.html', {'login_form': login_form})
+        register_get_form = RegisterGetForm()
+        return render(request, 'register.html', {'register_get_form': register_get_form})
 
     def post(self, request, *args, **kwargs):
-        pass
+        register_post_form = RegisterPostForm(request.POST)
+        dynamic_login = True
+        if register_post_form.is_valid():
+            mobile = register_post_form.cleaned_data['mobile']
+            password = register_post_form.cleaned_data['password']
+            # 新建用户
+            user = UserProfile(username=mobile)
+            user.set_password(password)
+            user.mobile = mobile
+            user.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            register_get_form = RegisterGetForm()
+            return render(request, 'register.html', {
+                'register_get_form': register_get_form,
+                'register_post_form': register_post_form
+            })
+
+
 
 
 class LoginView(View):

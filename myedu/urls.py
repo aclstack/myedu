@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 import xadmin
 from apps.user.views import LoginView, LogoutView, SendSmsView, DynamicLoginView, RegisterView
+from apps.organizations.views import OrgView
 
 # CBV(class base view)
 # FBV(function base view)
@@ -33,10 +34,18 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('d_login/', DynamicLoginView.as_view(), name='d_login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('register/', RegisterView.as_view(), name='register'),
+    path('register/', RegisterView.as_view(), name= 'register'),
+
+    # 短信验证相关页面
+    # -------------------
     url(r'^captcha/', include('captcha.urls')),
     # 去除对send_sms的csrf验证
     url(r'^send_sms/', csrf_exempt(SendSmsView.as_view()), name='send_sms'),
+    # -------------------
+
+    # 机构相关页面
+    url('^org_list/', OrgView.as_view(), name='org_list'),
+
 ]
 
 ### 编写一个view的几个步骤
