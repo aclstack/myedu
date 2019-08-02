@@ -18,6 +18,8 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.static import serve
+from myedu.settings import MEDIA_ROOT
 
 import xadmin
 from apps.user.views import LoginView, LogoutView, SendSmsView, DynamicLoginView, RegisterView
@@ -34,7 +36,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('d_login/', DynamicLoginView.as_view(), name='d_login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('register/', RegisterView.as_view(), name= 'register'),
+    path('register/', RegisterView.as_view(), name='register'),
 
     # 短信验证相关页面
     # -------------------
@@ -45,7 +47,8 @@ urlpatterns = [
 
     # 机构相关页面
     url('^org_list/', OrgView.as_view(), name='org_list'),
-
+    # 上传文件访问url
+    url('^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 ]
 
 ### 编写一个view的几个步骤

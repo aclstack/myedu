@@ -72,6 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 自定义上线文传入的变量
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -140,3 +142,7 @@ apikey = '123456'
 # redis相关配置
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379
+
+# 配置上传文件信息
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
