@@ -5,9 +5,9 @@ from django.db import models
 from apps.user.models import BaseModel
 
 CATEGORY_TYPE = (
-    ('jg', '培训机构'),
+    ('pxjg', '培训机构'),
     ('gr', '个人'),
-    ('gx', '高效'),
+    ('gx', '高校'),
 )
 
 # 后续可以设计相关添加城市功能，避免重复修改models
@@ -26,16 +26,24 @@ class CourseOrg(BaseModel):
     name = models.CharField(max_length=50, verbose_name='机构名称')
     desc = models.TextField(verbose_name='描述')
     tag = models.CharField(default='全国知名', verbose_name='机构标签', max_length=20)
-    category = models.CharField(default='jg', choices=CATEGORY_TYPE, max_length=2)
+    category = models.CharField(default='jg', choices=CATEGORY_TYPE, max_length=4)
     click_nums = models.IntegerField(default=0, verbose_name='点击数')
     fav_nums = models.IntegerField(default=0, verbose_name='收藏数')
     image = models.ImageField(upload_to='org/%Y/%m', verbose_name=u'logo', max_length=100)
     address = models.CharField(max_length=150, verbose_name='机构地址')
     students = models.IntegerField(default=0, verbose_name='学习人数')
     course_num= models.IntegerField(default=0, verbose_name='课程数')
+    is_auth = models.BooleanField(default=False, verbose_name='是否认证')
+    is_gold = models.BooleanField(default=False, verbose_name='是否金牌')
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='所在城市')
 
-
+    # 方法名不要和列名相同，否则前端无法正常获取数据
+    def courses(self):
+        # 反向取课程信息
+        # course_set 是如何出现的，由于当前models CourseOrg是course的外键所以可以采用course_set的方式反向取数据
+        # :3 只取前三条数据
+        courses =self.course_set.filter(is_classics=True)[:3]
+        return courses
     class Meta:
         verbose_name = '课程机构'
         verbose_name_plural = verbose_name

@@ -1,7 +1,7 @@
 from django.db import models
 
 from apps.user.models import BaseModel
-from apps.organizations.models import Teacher
+from apps.organizations.models import Teacher, CourseOrg
 
 """
 1、
@@ -26,6 +26,8 @@ CLASS_LEVEL = (
 
 class Course(BaseModel):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name='讲师')
+    # 增加外键简化操作，减少join。否则需要通过课程机构外键查询老师，然后在查询课程
+    course_org = models.ForeignKey(CourseOrg, null=True, blank=True, on_delete=models.CASCADE, verbose_name='课程机构')
     name = models.CharField(verbose_name="课程名", max_length=50)
     desc = models.CharField(verbose_name="课程描述", max_length=300)
     learn_times = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")
@@ -37,6 +39,7 @@ class Course(BaseModel):
     tag = models.CharField(default="", verbose_name="课程标签", max_length=10)
     need_know = models.CharField(default="", verbose_name="课程须知", max_length=300)
     teacher_tell = models.CharField(default="", max_length=300, verbose_name="老师告诉你")
+    is_classics = models.BooleanField(default=False, verbose_name='是否为经典课程')
     detail = models.TextField(verbose_name="课程详情")
     image = models.ImageField(upload_to="course/%Y/%m", verbose_name="封面图", max_length=100)
 

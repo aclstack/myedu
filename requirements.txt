@@ -1,6 +1,7 @@
 django==2.2
+django-simple-captcha
+django-pure-pagination
+redis
 mysqlclient
 Pillow
-django-simple-captcha
-redis
 xmltodict

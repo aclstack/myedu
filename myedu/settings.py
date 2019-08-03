@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'xadmin.apps.XAdminConfig',
     'captcha',
+    'pure_pagination',
 
 ]
 
@@ -146,3 +147,14 @@ REDIS_PORT = 6379
 # 配置上传文件信息
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 分页相关设置(https://github.com/jamespacileo/django-pure-pagination)
+PAGINATION_SETTINGS = {
+    # 页面过多时省略号中间显示的页码数
+    'PAGE_RANGE_DISPLAYED': 10,
+    # 页码过多时省略号前后显示的数目
+    'MARGIN_PAGES_DISPLAYED': 2,
+    # 如页数不存在自动显示第一页，False则显示404
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+
+}
