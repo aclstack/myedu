@@ -147,37 +147,24 @@
                 </div>
                 <p class="error company-tips" id="jsCompanyTips"></p>
 				<input class="btn" type="text" id="jsStayBtn" value="立即咨询 >" />
+                {% csrf_token %}
             </form>
 		</div>
 
 		<div class="right companyrank layout">
 			<div class="head">授课机构排名</div>
 
-
+            {% for org in hot_orgs %}
                 <dl class="des">
-                    <dt class="num fl">1</dt>
+                    {#forloop.counter 从 1 开始循环每次+1#}
+                    <dt class="num fl">{{ forloop.counter }}</dt>
+
                     <dd>
-                        <a href="/company/2/"><h1>慕课网</h1></a>
-                        <p>北京市</p>
+                        <a href="/company/2/"><h1>{{ org.name }}</h1></a>
+                        <p>{{ org.address }}</p>
                     </dd>
                 </dl>
-
-                <dl class="des">
-                    <dt class="num fl">2</dt>
-                    <dd>
-                        <a href="/company/2/"><h1>慕课网2</h1></a>
-                        <p>深圳市</p>
-                    </dd>
-                </dl>
-
-                <dl class="des">
-                    <dt class="num fl">3</dt>
-                    <dd>
-                        <a href="/company/2/"><h1>北京大学</h1></a>
-                        <p>北京市</p>
-                    </dd>
-                </dl>
-
+            {% endfor %}
 
 
 
@@ -194,7 +181,7 @@
                 $.ajax({
                     cache: false,
                     type: "POST",
-                    url: "/org/add_ask/",
+                    url: "{% url 'org:add_ask' %}",
                     data: $('#jsStayForm').serialize(),
                     async: true,
                     success: function (data) {

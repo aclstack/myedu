@@ -46,7 +46,10 @@ urlpatterns = [
     # -------------------
 
     # 机构相关页面
-    url('^org_list/', OrgView.as_view(), name='org_list'),
+    # url('^org_list/', OrgView.as_view(), name='org_list'),
+    # organizations为app_name 可以在这指定也可在include的urls.py指定
+    url('^org/', include(('apps.organizations.urls', 'organizations'), namespace='org')),
+
     # 上传文件访问url
     url('^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 ]
